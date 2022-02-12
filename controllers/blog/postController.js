@@ -1,21 +1,31 @@
 const fs = require('fs');
+const utils = require('../../helpers/utilities');
 
 
 const index = (req, res) => {
-    const actions = _getJSON('actions');
-    //console.log(actions);
-    //console.log('index post');
-    res.render('blog/posts/list', {title: 'All posts', req, actions});
+    //console.log(utils.getBaseUrl(req));
+    //console.log(utils.getJSON('./models/blog/post/actions.json'));
+    res.render('blog/posts/list', {
+        title: 'All posts',
+        req,
+        'actions': utils.getJSON('./models/blog/post/actions.json'),
+        'baseUrl': utils.getBaseUrl(req)
+    });
 }
 
 const edit = (req, res) => {
     console.log('edit post');
-    res.render('blog/posts/edit', {title: 'Edit post', req});
+    res.render('blog/posts/edit', {title: 'Edit post', req, 'baseUrl': utils.getBaseUrl(req)});
 }
 
 const create = (req, res) => {
-    console.log('create post');
-    res.render('blog/posts/create', {title: 'Create post', req});
+    //console.log('create post');
+    res.render('blog/posts/create', {
+        title: 'Create post', 
+        req,
+        'actions': utils.getJSON('./models/blog/post/actions.json'),
+        'baseUrl': utils.getBaseUrl(req)
+    });
 }
 
 const save = (req, res) => {
@@ -24,11 +34,6 @@ const save = (req, res) => {
 
 const remove = (req, res) => {
     console.log('remove post');
-}
-
-const _getJSON = (fileName) => {
-    let rawdata = fs.readFileSync('./models/blog/post/'+fileName+'.json');
-    return JSON.parse(rawdata);
 }
 
 module.exports = {

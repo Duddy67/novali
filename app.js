@@ -6,9 +6,10 @@ const https = require('https');
 const fs = require('fs');
 const blogRoutes = require('./routes/blogRoutes');
 const usersRoutes = require('./routes/usersRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
-//const postController = require('./controllers/blog/postController');
-//const userController = require('./controllers/users/userController');
+//const postController = require('./controllers/blog/postController'); // test
+//const userController = require('./controllers/users/userController'); //
 
 // Express app
 const app = express();
@@ -32,8 +33,10 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     //res.send('Successful response.');
-    res.render('dashboard');
+    res.redirect('dashboard');
 });
+
+app.use('/dashboard', dashboardRoutes);
 
 // blog routes
 app.get('/blog', (req, res) => {

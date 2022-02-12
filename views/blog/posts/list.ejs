@@ -1,5 +1,4 @@
 <%- include('../../partials/toolbar.ejs', {type: 'list'}) %>
-<% const baseUrl = `${req.protocol}://${req.headers.host}`; %>
 <h1>Posts</h2>
 
 <input type="hidden" id="fullUrl" value="<%= `${baseUrl}${req.originalUrl}` %>">
