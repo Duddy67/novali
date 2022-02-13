@@ -1,0 +1,31 @@
+<div>Fields</div>
+
+<% fields.forEach( field => { %>
+    <% if (field.hasOwnProperty('label')) { %>
+        <label for="<%= field.id %>"><%= field.label %></label>
+    <% } %> 
+
+    <% const fieldClass = field.hasOwnProperty('class') ? field.class : ''; %>
+
+    <% if (['text', 'hidden', 'password', 'date', 'file'].includes(field.type)) { %>
+        <input type="<%= field.type %>" id="<%= field.id %>" 
+
+        <% if (field.hasOwnProperty('name')) { %>
+                name="<%= field.name %>"
+        <% } %>
+
+        <% if (field.type != 'hidden') { %>
+                class="form-control <%= fieldClass %>"
+        <% } %>
+
+        <% if (field.hasOwnProperty('placeholder')) { %>
+            placeholder="<%= field.placeholder %>"
+        <% } %> 
+
+        >
+    <% } %>
+
+    <% if (field.type == 'select') { %>
+    <% } %>
+<% }) %>
+

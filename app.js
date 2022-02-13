@@ -31,6 +31,8 @@ app.use((req, res, next) => {
 // Serves static files in the "public" repository.
 app.use(express.static('public'));
 
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/', (req, res) => {
     //res.send('Successful response.');
     res.redirect('dashboard');

@@ -1,9 +1,10 @@
 
+<%- include('../../partials/toolbar.ejs', {type: 'form'}) %>
+
 <h2 class="page-header">Create Post</h2>
-<form action="/posts" method="POST">
-  <%- include('_fields') %>
-  <div class="form-row form-row-end btn-row">
-    <a class="btn btn-danger" href="/books">Cancel</a>
-    <button class="btn btn-primary" type="submit">Create</button>
-  </div>
+<form action="/blog/posts" id="createForm" method="POST">
+  <%- include('../../partials/fields.ejs') %>
+  <input type="hidden" id="fullUrl" value="<%= `${baseUrl}${req.originalUrl}` %>">
 </form>
+
+<script src="<%= baseUrl %>/js/form.js"></script>

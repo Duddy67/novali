@@ -24,12 +24,15 @@ const create = (req, res) => {
         title: 'Create post', 
         req,
         'actions': utils.getJSON('./models/blog/post/actions.json'),
+        'fields': utils.getJSON('./models/blog/post/fields.json'),
         'baseUrl': utils.getBaseUrl(req)
     });
 }
 
 const save = (req, res) => {
     console.log('save post');
+    console.log(req.body);
+    res.redirect('/blog/posts/1');
 }
 
 const remove = (req, res) => {
