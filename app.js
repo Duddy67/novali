@@ -8,11 +8,22 @@ const blogRoutes = require('./routes/blogRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 
-//const postController = require('./controllers/blog/postController'); // test
-//const userController = require('./controllers/users/userController'); //
-
 // Express app
 const app = express();
+
+// Serves the API with signed certificate on 3000 (SSL/HTTPS) port
+const httpsServer = https.createServer({
+    key: fs.readFileSync('./ssl/privkey.pem'),
+    cert: fs.readFileSync('./ssl/fullchain.pem'),
+}, app);
+
+// connect to mongodb & listen for requests
+const dbURI = "mongodb+srv://kenobi:S19se%40nniu14G@cluster0.hfodd.mongodb.net/novali?retryWrites=true&w=majority";
+//const dbURI = "mongodb+srv://kenobi:S19se%40nniu14G@cluster0.hfodd.mongodb.net/Cluster0?retryWrites=true&w=majority";
+
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(result => httpsServer.listen(3000))
+  .catch(err => console.log(err));
 
 // Set the templating engine
 app.use(ejsLayouts);
@@ -54,14 +65,8 @@ app.get('/users', (req, res) => {
 
 app.use('/users/users', usersRoutes);
 
-// Serves the API with signed certificate on 3000 (SSL/HTTPS) port
-const httpsServer = https.createServer({
-    key: fs.readFileSync('./ssl/privkey.pem'),
-    cert: fs.readFileSync('./ssl/fullchain.pem'),
-}, app);
-
-httpsServer.listen(3000, () => {
+/*httpsServer.listen(3000, () => {
     console.log('HTTPS Server running on port 3000');
-});
+});*/
 
 //app.listen(3000, () => console.log('Example app is listening on port 3000.'));

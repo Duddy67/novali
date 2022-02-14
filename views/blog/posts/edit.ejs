@@ -1,9 +1,10 @@
+<%- include('../../partials/toolbar.ejs', {type: 'form'}) %>
 
+<%= console.log(post.title) %>
 <h2 class="page-header">Edit Post</h2>
-<form action="/posts" method="POST">
-  <%- include('_fields') %>
-  <div class="form-row form-row-end btn-row">
-    <a class="btn btn-danger" href="/books">Cancel</a>
-    <button class="btn btn-primary" type="submit">Create</button>
-  </div>
+<form action="/blog/posts/<%= post._id %>" method="PUT">
+  <%- include('../../partials/fields.ejs') %>
+  <input type="hidden" id="fullUrl" value="<%= `${baseUrl}${req.originalUrl}` %>">
 </form>
+
+<script src="<%= baseUrl %>/js/form.js"></script>

@@ -1,0 +1,24 @@
+[
+    {
+      "label": "labels.generic.title",
+      "type": "text",
+      "name": "title",
+      "id": "title",
+      "placeholder": "labels.generic.title"
+    },
+    {
+      "label": "labels.posts.slug",
+      "type": "text",
+      "name": "slug",
+      "id": "slug",
+      "tab": "details",
+      "placeholder": "labels.posts.slug"
+    },
+    {
+      "label": "labels.posts.content",
+      "type": "textarea",
+      "name": "content",
+      "class": "tinymce-texteditor",
+      "id": "content"
+    }
+  ]

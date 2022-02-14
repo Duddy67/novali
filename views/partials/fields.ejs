@@ -6,6 +6,7 @@
     <% } %> 
 
     <% const fieldClass = field.hasOwnProperty('class') ? field.class : ''; %>
+    <% const fieldValue = field.hasOwnProperty('value') ? field.value: ''; %>
 
     <% if (['text', 'hidden', 'password', 'date', 'file'].includes(field.type)) { %>
         <input type="<%= field.type %>" id="<%= field.id %>" 
@@ -22,10 +23,21 @@
             placeholder="<%= field.placeholder %>"
         <% } %> 
 
-        >
+        value="<%= fieldValue %>">
     <% } %>
 
     <% if (field.type == 'select') { %>
+    <% } %>
+
+    <% if (field.type == 'textarea') { %>
+        <textarea id="<%= field.id %>" class="form-control <%= fieldClass %>"
+
+        <% if (field.hasOwnProperty('name')) { %>
+                name="<%= field.name %>"
+        <% } %>
+
+        ><%= fieldValue %></textarea>
+
     <% } %>
 <% }) %>
 
