@@ -4,12 +4,14 @@ const ejsLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const https = require('https');
 const fs = require('fs');
+const utils = require('./helpers/utilities');
 const blogRoutes = require('./routes/blogRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 
 // Express app
 const app = express();
+const config = utils.getJSON('config.json');
 
 // Serves the API with signed certificate on 3000 (SSL/HTTPS) port
 const httpsServer = https.createServer({
@@ -18,10 +20,7 @@ const httpsServer = https.createServer({
 }, app);
 
 // connect to mongodb & listen for requests
-const dbURI = "mongodb+srv://kenobi:S19se%40nniu14G@cluster0.hfodd.mongodb.net/novali?retryWrites=true&w=majority";
-//const dbURI = "mongodb+srv://kenobi:S19se%40nniu14G@cluster0.hfodd.mongodb.net/Cluster0?retryWrites=true&w=majority";
-
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(config.db_uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => httpsServer.listen(3000))
   .catch(err => console.log(err));
 
