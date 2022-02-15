@@ -1,0 +1,18 @@
+[
+    {
+      "label": "labels.generic.title",
+      "name": "title",
+      "extra": ["sortable"],
+      "type": "string"
+    },
+    {
+      "label": "labels.generic.created_at",
+      "name": "createdAt",
+      "type": "date"
+    },
+    {
+      "label": "labels.generic.updated_at",
+      "name": "updatedAt",
+      "type": "date"
+    }
+  ]
