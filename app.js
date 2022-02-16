@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const ejsLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 const https = require('https');
 const fs = require('fs');
 const utils = require('./helpers/utilities');
@@ -29,6 +30,8 @@ app.use(ejsLayouts);
 // Define the default layout file.
 app.set('layout', './layouts/index3');
 app.set('view engine', 'ejs');
+
+app.use(methodOverride('_method'));
 
 // Middlewares
 

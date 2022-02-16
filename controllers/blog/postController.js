@@ -66,16 +66,25 @@ const save = (req, res) => {
 }
 
 const update = (req, res) => {
+    //console.log('edit post: '+req.params.id);
+    console.log(req.body);
     Post.findById(req.params.id)
     .then(post => {
+        res.redirect('/blog/posts/'+post._id);
     }).catch(err => {
         console.log(err);
         res.render('404', { title: 'Post not found' });
-      });
+    });
 }
 
-const remove = (req, res) => {
-    console.log('remove post');
+const cancel = (req, res) => {
+    //console.log(req.params.id);
+    res.redirect('/blog/posts');
+}
+
+const destroy = (req, res) => {
+    console.log('destroy post');
+    res.redirect('/blog/posts');
 }
 
 function _getFields(post) {
@@ -84,7 +93,6 @@ function _getFields(post) {
        field.value = post[field.name]; 
     });
 
-    console.log(fields);
     return fields;
 }
 
@@ -92,7 +100,8 @@ module.exports = {
     index,
     edit,
     create,
+    cancel,
     save,
     update,
-    remove
+   destroy 
 }
