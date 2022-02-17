@@ -9,6 +9,7 @@ const utils = require('./helpers/utilities');
 const blogRoutes = require('./routes/blogRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const apiRoutes = require('./routes/apiRoutes');
 
 // Express app
 const app = express();
@@ -66,6 +67,8 @@ app.get('/users', (req, res) => {
 });
 
 app.use('/users/users', usersRoutes);
+
+app.use('/api', apiRoutes);
 
 /*httpsServer.listen(3000, () => {
     console.log('HTTPS Server running on port 3000');
