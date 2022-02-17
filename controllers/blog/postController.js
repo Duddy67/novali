@@ -67,10 +67,20 @@ const save = (req, res) => {
 
 const update = (req, res) => {
     //console.log('edit post: '+req.params.id);
-    console.log(req.body);
+    //console.log(req.body);
     Post.findById(req.params.id)
     .then(post => {
-        res.redirect('/blog/posts/'+post._id);
+        post.title = req.body.title;
+        post.content = req.body.content;
+
+        post.save()
+        .then(result => {
+            res.redirect('/blog/posts/'+post._id);
+        })
+        .catch(err => {
+            console.log(err);
+            res.redirect('/blog/posts/'+post._id);
+        });
     }).catch(err => {
         console.log(err);
         res.render('404', { title: 'Post not found' });
@@ -83,8 +93,14 @@ const cancel = (req, res) => {
 }
 
 const destroy = (req, res) => {
-    console.log('destroy post');
-    res.redirect('/blog/posts');
+    Post.findByIdAndDelete(req.params.id)
+    .then(result => {
+        console.log('destroy post');
+        res.redirect('/blog/posts');
+    }).catch(err => {
+        console.log(err);
+        res.render('404', { title: 'Post not found' });
+    });
 }
 
 function _getFields(post) {

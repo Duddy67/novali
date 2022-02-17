@@ -6,16 +6,17 @@ const postSchema = new Schema({
   title: {
     type: String,
     trim: true,
-    required: true,
+    required: [true, 'Title cannot be empty.'],
   },
   slug: {
     type: String,
+    trim: true,
     required: false,
   },
   content: {
     type: String,
     trim: true,
-    required: true
+    required: [true, 'Content cannot be empty.'],
   },
 }, { timestamps: true });
 
