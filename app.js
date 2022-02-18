@@ -68,6 +68,7 @@ app.get('/users', (req, res) => {
 
 app.use('/users/users', usersRoutes);
 
+// API routes
 app.use('/api', apiRoutes);
 
 /*httpsServer.listen(3000, () => {

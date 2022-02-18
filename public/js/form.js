@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-   const fullUrl = document.getElementById('fullUrl').value;
+   const fullUrl = document.getElementById('_fullUrl').value;
    //const actions = ['save', 'saveClose', 'cancel', 'destroy'];
 
    document.getElementById('save').addEventListener('click', function() {
@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
    }, true);
 
    document.getElementById('saveClose').addEventListener('click', function() {
+       document.getElementById('_close').value = 1;
        document.getElementById('itemForm').submit();
    }, true);
 

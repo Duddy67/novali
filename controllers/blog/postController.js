@@ -1,11 +1,8 @@
-const fs = require('fs');
-const utils = require('../../helpers/utilities');
 const Post = require('../../models/blog/post');
+const utils = require('../../helpers/utilities');
 
 
 const index = (req, res) => {
-    //console.log(utils.getBaseUrl(req));
-    //console.log(utils.getJSON('./models/blog/post/actions.json'));
     Post.find()
     .then(items => {
         res.render('blog/posts/list', {
@@ -58,7 +55,12 @@ const save = (req, res) => {
     const post = new Post(req.body);
     post.save()
       .then(result => {
-            res.redirect('/blog/posts/'+post._id);
+            if (req.body._close) {
+                res.redirect('/blog/posts');
+            }
+            else {
+                res.redirect('/blog/posts/'+post._id);
+            }
       })
       .catch(err => {
         console.log(err);
@@ -75,7 +77,12 @@ const update = (req, res) => {
 
         post.save()
         .then(result => {
-            res.redirect('/blog/posts/'+post._id);
+            if (req.body._close) {
+                res.redirect('/blog/posts');
+            }
+            else {
+                res.redirect('/blog/posts/'+post._id);
+            }
         })
         .catch(err => {
             console.log(err);
@@ -88,7 +95,7 @@ const update = (req, res) => {
 }
 
 const cancel = (req, res) => {
-    //console.log(req.params.id);
+    //console.log('cancel ');
     res.redirect('/blog/posts');
 }
 

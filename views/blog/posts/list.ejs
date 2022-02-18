@@ -1,7 +1,14 @@
 <%- include('../../partials/toolbar.ejs', {type: 'list'}) %>
 <h1>Posts</h2>
 
-<%- include('../../partials/itemList.ejs') %>
-<input type="hidden" id="fullUrl" value="<%= `${baseUrl}${req.originalUrl}` %>">
+<% if (items.length === 0) { %> 
+    <div class="alert alert-info" role="alert">
+	    No item has been found.
+	</div>
+<% } else { %> 
+    <%- include('../../partials/itemList.ejs') %>
+<% } %> 
+
+<input type="hidden" id="_fullUrl" value="<%= `${baseUrl}${req.originalUrl}` %>">
 
 <script src="<%= baseUrl %>/js/list.js"></script>

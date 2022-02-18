@@ -1,0 +1,23 @@
+[
+    {
+      "label": "labels.generic.name",
+      "type": "text",
+      "name": "name",
+      "id": "name",
+      "placeholder": "labels.generic.name"
+    },
+    {
+      "label": "labels.users.email",
+      "type": "text",
+      "name": "email",
+      "id": "email",
+      "tab": "details",
+      "placeholder": "labels.users.email"
+    },
+    {
+      "label": "labels.users.password",
+      "type": "password",
+      "name": "password",
+      "id": "password"
+    }
+  ]

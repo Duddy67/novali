@@ -6,8 +6,9 @@ const router = express.Router();
 router.get('/create', postController.create);
 router.get('/', postController.index);
 router.post('/', postController.save);
-router.get('/:id', postController.edit);
+// Important: Put the routes with conditional parameter BEFORE the routes with static parameter.
 router.get('/cancel/:id?', postController.cancel);
+router.get('/:id', postController.edit);
 router.put('/:id', postController.update);
 router.delete('/:id', postController.destroy);
 

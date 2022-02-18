@@ -3,9 +3,9 @@
 <h2 class="page-header">Create Post</h2>
 <form action="/blog/posts" id="itemForm" method="POST">
   <%- include('../../partials/fields.ejs') %>
-    <input type="hidden" id="fullUrl" value="<%= `${baseUrl}${req.originalUrl}` %>">
+    <input type="hidden" id="_fullUrl" value="<%= `${baseUrl}${req.originalUrl}` %>">
     <input type="hidden" id="_cancel" value="<%= `${baseUrl}/blog/posts/cancel` %>">
-    <input type="hidden" id="_action" value="create">
+    <input type="hidden" name="_close" id="_close" value="">
 </form>
 
 <script src="<%= baseUrl %>/js/form.js"></script>
