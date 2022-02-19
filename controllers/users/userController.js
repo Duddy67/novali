@@ -111,6 +111,10 @@ const destroy = (req, res) => {
 function _getFields(user) {
     let fields = utils.getJSON('./models/users/user/fields.json');
     fields.forEach(field => {
+        if (field.name == 'password') {
+            return;
+        }
+
        field.value = user[field.name]; 
     });
 

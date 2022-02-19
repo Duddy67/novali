@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt');
 const utils = require('../../helpers/utilities');
+const Schema = mongoose.Schema;
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -26,6 +27,13 @@ const userSchema = new Schema({
     required: [true, 'Content cannot be empty.'],
   },
 }, { timestamps: true });
+
+userSchema.pre('save', async function () {
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(10);
+    // now we set user password to hashed password
+    this.password = await bcrypt.hash(this.password, salt);
+})
 
 
 const User = mongoose.model('User', userSchema);

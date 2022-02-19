@@ -9,6 +9,7 @@ const utils = require('./helpers/utilities');
 const blogRoutes = require('./routes/blogRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const loginRoutes = require('./routes/loginRoutes');
 const apiRoutes = require('./routes/apiRoutes');
 
 // Express app
@@ -47,8 +48,10 @@ app.use(express.static('public'));
 
 app.use(express.urlencoded({ extended: true }));
 
+
+//app.use('/', loginRoutes);
+
 app.get('/', (req, res) => {
-    //res.send('Successful response.');
     res.redirect('dashboard');
 });
 
