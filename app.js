@@ -5,12 +5,14 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const https = require('https');
 const fs = require('fs');
+const cookieParser = require('cookie-parser');
 const utils = require('./helpers/utilities');
 const blogRoutes = require('./routes/blogRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const loginRoutes = require('./routes/loginRoutes');
 const apiRoutes = require('./routes/apiRoutes');
+const { requireAuth } = require('./middlewares/authMiddleware');
 
 // Express app
 const app = express();
@@ -28,28 +30,25 @@ mongoose.connect(config.db_uri, { useNewUrlParser: true, useUnifiedTopology: tru
   .catch(err => console.log(err));
 
 // Set the templating engine
-app.use(ejsLayouts);
-// Define the default layout file.
-app.set('layout', './layouts/index3');
 app.set('view engine', 'ejs');
-
-app.use(methodOverride('_method'));
 
 // Middlewares
 
-app.use((req, res, next) => {
-  //console.log('Time: ', Date.now());
-  //console.log(req.get('host'));
-  next();
-});
-
+app.use(methodOverride('_method'));
+app.use(cookieParser());
 // Serves static files in the "public" repository.
 app.use(express.static('public'));
 
 app.use(express.urlencoded({ extended: true }));
 
 
-//app.use('/', loginRoutes);
+app.get('/login', loginRoutes);
+
+app.use(requireAuth);
+
+// Add the layout engine and set the default layout file.
+app.use(ejsLayouts);
+app.set('layout', './layouts/index3');
 
 app.get('/', (req, res) => {
     res.redirect('dashboard');
