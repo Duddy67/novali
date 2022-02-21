@@ -10,7 +10,7 @@ const utils = require('./helpers/utilities');
 const blogRoutes = require('./routes/blogRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
-const loginRoutes = require('./routes/loginRoutes');
+const authRoutes = require('./routes/authRoutes');
 const apiRoutes = require('./routes/apiRoutes');
 const { requireAuth } = require('./middlewares/authMiddleware');
 
@@ -38,11 +38,12 @@ app.use(methodOverride('_method'));
 app.use(cookieParser());
 // Serves static files in the "public" repository.
 app.use(express.static('public'));
+app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
 
-app.get('/login', loginRoutes);
+app.use('/login', authRoutes);
 
 app.use(requireAuth);
 

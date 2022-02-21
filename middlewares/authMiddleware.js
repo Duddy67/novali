@@ -6,6 +6,7 @@ const requireAuth = (req, res, next) => {
     //const token = req.cookies.jwt;
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
+    //console.log(req.cookies.jwt);
 
     if (token) {
 
