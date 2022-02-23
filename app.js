@@ -12,7 +12,7 @@ const usersRoutes = require('./routes/usersRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const authRoutes = require('./routes/authRoutes');
 const apiRoutes = require('./routes/apiRoutes');
-const { requireAuth } = require('./middlewares/authMiddleware');
+const { requireAuth, checkUser } = require('./middlewares/authMiddleware');
 
 // Express app
 const app = express();
@@ -43,8 +43,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.use('/login', authRoutes);
+app.use('/', authRoutes);
 
+// Make sure the user is logged in.
 app.use(requireAuth);
 
 // Add the layout engine and set the default layout file.

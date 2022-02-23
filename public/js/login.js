@@ -8,30 +8,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // Prevent the form to be refreshed.
         e.preventDefault();
 
-        // reset errors
+        // Reset errors
         emailError.textContent = '';
         passwordError.textContent = '';
 
-        // get values
+        // Get values
         const email = form.email.value;
         const password = form.password.value;
 
         console.log(email, password);
         try {
+            // Check the user exists and the password is valid.
             const res = await fetch('/login', { 
                 method: 'POST', 
                 body: JSON.stringify({ email, password }),
                 headers: {'Content-Type': 'application/json'}
             });
 
+            // Get the result.
             const data = await res.json();
-            console.log(data);
+            //console.log(data);
             if (data.errors) {
                 emailError.textContent = data.errors.email;
                 passwordError.textContent = data.errors.password;
             }
 
             if (data.user) {
+                // NB. The jwt token is checked first. If the token is invalid the user is redirected to the login page.
                 location.assign('/dashboard');
             }
         }

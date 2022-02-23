@@ -62,6 +62,13 @@ const login = async (req, res) => {
     }
 }
 
+const logout = (req, res) => {
+    // Makes the jwt token invalid.
+    res.cookie('jwt', '', { maxAge: 1 });
+    res.redirect('/login');
+}
+
 module.exports = {
-    login
+    login,
+    logout
 }
