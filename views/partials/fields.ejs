@@ -27,6 +27,15 @@
     <% } %>
 
     <% if (field.type == 'select') { %>
+            <select id="<%= field.id %>" name="<%= field.name %>" class="form-control <%= fieldClass %>">
+                <% if (field.hasOwnProperty('blank')) { %>
+                    <option value=""><%= field.blank %> </option> 
+                <% } %>
+
+                <% field.options.forEach(function (option) { %>
+                    <option value="<%= option %>"><%= option %></option> 
+                <% }); %> 
+            </select>
     <% } %>
 
     <% if (field.type == 'textarea') { %>

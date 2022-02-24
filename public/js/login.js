@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = form.email.value;
         const password = form.password.value;
 
-        console.log(email, password);
         try {
             // Check the user exists and the password is valid.
             const res = await fetch('/login', { 

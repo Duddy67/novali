@@ -19,5 +19,13 @@
       "type": "password",
       "name": "password",
       "id": "password"
+    },
+    {
+      "label": "labels.users.role",
+      "type": "select",
+      "name": "role",
+      "id": "role",
+      "blank": "labels.generic.select_option",
+      "options": [] 
     }
   ]

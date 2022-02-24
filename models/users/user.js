@@ -26,6 +26,11 @@ const userSchema = new Schema({
     trim: true,
     required: [true, 'Content cannot be empty.'],
   },
+  role: {
+    type: String,
+    trim: true,
+    required: true,
+  },
 }, { timestamps: true });
 
 userSchema.pre('save', async function () {
@@ -33,7 +38,7 @@ userSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10);
     // now we set user password to hashed password
     this.password = await bcrypt.hash(this.password, salt);
-})
+});
 
 // Static method to login user
 userSchema.statics.login = async function(email, password) {
@@ -50,5 +55,19 @@ userSchema.statics.login = async function(email, password) {
     throw Error('incorrect email');
 };
 
+userSchema.virtual('roleOptions').get(function () {
+    const options = utils.getJSON('./models/users/user/roles.json');
+    console.log('user name'+this.name);
+    return options;
+});
+
+userSchema.statics.getRoleOptions = function() {
+    const options = utils.getJSON('./models/users/user/roles.json');
+    console.log('getRoleOptions');
+    return options;
+};
+
+// Create the User model.
 const User = mongoose.model('User', userSchema);
+
 module.exports = User;

@@ -1,6 +1,5 @@
 <%- include('../../partials/toolbar.ejs', {type: 'form'}) %>
 
-<%= console.log(user.name) %>
 <h2 class="page-header"><%= title  %> </h2>
 <form action="/users/users/<%= user._id %>?_method=PUT" id="itemForm" method="POST">
     <%- include('../../partials/fields.ejs') %>

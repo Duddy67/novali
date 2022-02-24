@@ -20,7 +20,7 @@ const index = (req, res) => {
 }
 
 const create = (req, res) => {
-    //console.log('create post');
+    User.getRoleOptions();
     res.render('users/users/create', {
         title: 'Create user', 
         req,
@@ -33,7 +33,7 @@ const create = (req, res) => {
 const edit = (req, res) => {
     User.findById(req.params.id)
     .then(user => {
-
+        
         res.render('users/users/edit', {
             title: 'Edit user', 
             req, 
@@ -72,6 +72,7 @@ const update = (req, res) => {
         user.name = req.body.name;
         user.email = req.body.email;
         user.password = req.body.password;
+        user.role = req.body.role;
 
         user.save()
         .then(result => {
@@ -114,6 +115,10 @@ function _getFields(user) {
         if (field.name == 'password') {
             return;
         }
+
+       if (field.name == 'role') {
+           field.options = user.roleOptions;
+       }
 
        field.value = user[field.name]; 
     });
