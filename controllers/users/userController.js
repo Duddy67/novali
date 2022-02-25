@@ -33,13 +33,20 @@ const create = (req, res) => {
 const edit = (req, res) => {
     User.findById(req.params.id)
     .then(user => {
-        
+        let fields = _getFields(user);
+
+        if (req.query.valid !== undefined) {
+            const valid = JSON.parse(req.query.valid);
+            fields = utils.setFieldErrors(fields, valid.errors); 
+        }
+        console.log(fields);
+
         res.render('users/users/edit', {
             title: 'Edit user', 
             req, 
             user,
             'actions': utils.getJSON('./models/users/user/actions.json'),
-            'fields': _getFields(user),
+            'fields': fields,
             'baseUrl': utils.getBaseUrl(req)
         });
     }).catch(err => {
@@ -66,7 +73,6 @@ const save = (req, res) => {
 }
 
 const update = (req, res) => {
-    console.log(req.body);
     User.findById(req.params.id)
     .then(user => {
         user.name = req.body.name;
@@ -84,11 +90,12 @@ const update = (req, res) => {
             }
         })
         .catch(err => {
-            console.log(err);
-            res.redirect('/users/users/'+user._id);
+            //console.log(err);
+            //req.app.set('err', err);
+            res.redirect('/users/users/'+user._id+'?valid='+encodeURIComponent(JSON.stringify(err)));
         });
     }).catch(err => {
-        console.log(err);
+        //console.log(err);
         res.render('404', { title: 'User not found' });
     });
 }

@@ -6,7 +6,8 @@
     <% } %> 
 
     <% const fieldClass = field.hasOwnProperty('class') ? field.class : ''; %>
-    <% const fieldValue = field.hasOwnProperty('value') ? field.value: ''; %>
+    <% const fieldValue = field.hasOwnProperty('value') ? field.value : ''; %>
+    <% const error = field.hasOwnProperty('error') ? field.error : null; %>
 
     <% if (['text', 'hidden', 'password', 'date', 'file'].includes(field.type)) { %>
         <input type="<%= field.type %>" id="<%= field.id %>" 
@@ -47,6 +48,10 @@
 
         ><%= fieldValue %></textarea>
 
+    <% } %>
+
+    <% if (error) { %> 
+        <div class="error"><%= error %> </div>
     <% } %>
 <% }) %>
 

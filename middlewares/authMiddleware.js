@@ -18,7 +18,6 @@ const requireAuth = (req, res, next) => {
                 res.redirect('/login');
             }
             else {
-                console.log(decodedToken);
                 let user = await User.findById(decodedToken.id);
                 // Inject the user data into the view.
                 res.locals.currentUser = user;
