@@ -28,25 +28,8 @@ const slugify = (str) => {
     return str
 }
 
-const setFieldErrors = (fields, errors) => {
-    //console.log(typeof errors);
-    //console.log(valid);
-    fields.forEach( field => {
-        for (let key in errors) {
-            if (key == field.name) {
-                field.error = errors[key].message;
-                field.value = errors[key].value;
-                //console.log(key+' '+errors[key].message);
-            }
-        }
-    });
-
-    return fields;
-}
-
 module.exports = {
     getBaseUrl,
     getJSON,
-    slugify,
-    setFieldErrors
+    slugify
 }

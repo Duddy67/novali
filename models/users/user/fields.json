@@ -4,6 +4,7 @@
       "type": "text",
       "name": "name",
       "id": "name",
+      "extra": ["validation"], 
       "placeholder": "labels.generic.name"
     },
     {
@@ -11,6 +12,7 @@
       "type": "text",
       "name": "email",
       "id": "email",
+      "extra": ["validation"], 
       "tab": "details",
       "placeholder": "labels.users.email"
     },
@@ -18,13 +20,15 @@
       "label": "labels.users.password",
       "type": "password",
       "name": "password",
-      "id": "password"
+      "id": "password",
+      "extra": ["validation"] 
     },
     {
       "label": "labels.users.role",
       "type": "select",
       "name": "role",
       "id": "role",
+      "extra": ["validation"], 
       "blank": "labels.generic.select_option",
       "options": [] 
     }

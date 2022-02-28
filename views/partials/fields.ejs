@@ -5,9 +5,11 @@
         <label for="<%= field.id %>"><%= field.label %></label>
     <% } %> 
 
-    <% const fieldClass = field.hasOwnProperty('class') ? field.class : ''; %>
-    <% const fieldValue = field.hasOwnProperty('value') ? field.value : ''; %>
-    <% const error = field.hasOwnProperty('error') ? field.error : null; %>
+    <% const fieldClass = field.hasOwnProperty('class') ? field.class : ''; 
+       const fieldValue = field.hasOwnProperty('value') ? field.value : ''; 
+       const error = field.hasOwnProperty('error') ? field.error : null; 
+       //const errorClass = field.hasOwnProperty('error') ? 'is-invalid' : ''; 
+       const validationClass = field.hasOwnProperty('extra') && field.extra.includes('validation') ? '_validation' : ''; %>
 
     <% if (['text', 'hidden', 'password', 'date', 'file'].includes(field.type)) { %>
         <input type="<%= field.type %>" id="<%= field.id %>" 
@@ -17,7 +19,7 @@
         <% } %>
 
         <% if (field.type != 'hidden') { %>
-                class="form-control <%= fieldClass %>"
+                class="form-control <%= `${fieldClass} ${validationClass}` %>"
         <% } %>
 
         <% if (field.hasOwnProperty('placeholder')) { %>
@@ -28,19 +30,20 @@
     <% } %>
 
     <% if (field.type == 'select') { %>
-            <select id="<%= field.id %>" name="<%= field.name %>" class="form-control <%= fieldClass %>">
+            <select id="<%= field.id %>" name="<%= field.name %>" class="form-control <%= `${fieldClass} ${validationClass}` %>">
                 <% if (field.hasOwnProperty('blank')) { %>
                     <option value=""><%= field.blank %> </option> 
                 <% } %>
 
-                <% field.options.forEach(function (option) { %>
-                    <option value="<%= option %>"><%= option %></option> 
+                <% field.options.forEach(function (option) {
+                        const selected = fieldValue == option ? 'selected="selected"' : ''; %>
+                        <option value="<%= option %>" <%= selected %>><%= option %></option> 
                 <% }); %> 
             </select>
     <% } %>
 
     <% if (field.type == 'textarea') { %>
-        <textarea id="<%= field.id %>" class="form-control <%= fieldClass %>"
+        <textarea id="<%= field.id %>" class="form-control <%= `${fieldClass} ${validationClass}` %>"
 
         <% if (field.hasOwnProperty('name')) { %>
                 name="<%= field.name %>"
@@ -50,8 +53,8 @@
 
     <% } %>
 
-    <% if (error) { %> 
-        <div class="error"><%= error %> </div>
+    <% if (validationClass) { %> 
+        <div class="<%= field.name %> error text-danger"><%= error %> </div>
     <% } %>
 <% }) %>
 

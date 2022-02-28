@@ -20,12 +20,14 @@ const index = (req, res) => {
 }
 
 const create = (req, res) => {
+        console.log(req.currentUser);
     User.getRoleOptions();
     res.render('users/users/create', {
         title: 'Create user', 
         req,
         'actions': utils.getJSON('./models/users/user/actions.json'),
-        'fields': utils.getJSON('./models/users/user/fields.json'),
+        //'fields': utils.getJSON('./models/users/user/fields.json'),
+        'fields': _getFields(req),
         'baseUrl': utils.getBaseUrl(req)
     });
 }
@@ -33,20 +35,13 @@ const create = (req, res) => {
 const edit = (req, res) => {
     User.findById(req.params.id)
     .then(user => {
-        let fields = _getFields(user);
-
-        if (req.query.valid !== undefined) {
-            const valid = JSON.parse(req.query.valid);
-            fields = utils.setFieldErrors(fields, valid.errors); 
-        }
-        console.log(fields);
 
         res.render('users/users/edit', {
             title: 'Edit user', 
             req, 
             user,
             'actions': utils.getJSON('./models/users/user/actions.json'),
-            'fields': fields,
+            'fields': _getFields(req, user),
             'baseUrl': utils.getBaseUrl(req)
         });
     }).catch(err => {
@@ -60,15 +55,10 @@ const save = (req, res) => {
     const user = new User(req.body);
     user.save()
       .then(result => {
-            if (req.body._close) {
-                res.redirect('/users/users');
-            }
-            else {
-                res.redirect('/users/users/'+user._id);
-            }
+            return res.send({ success: { message: 'User saved successfuly', result } });
       })
       .catch(err => {
-        console.log(err);
+          return res.send(err);
       });
 }
 
@@ -82,21 +72,14 @@ const update = (req, res) => {
 
         user.save()
         .then(result => {
-            if (req.body._close) {
-                res.redirect('/users/users');
-            }
-            else {
-                res.redirect('/users/users/'+user._id);
-            }
+            return res.send({ success: { message: 'User saved successfuly', result } });
         })
         .catch(err => {
-            //console.log(err);
-            //req.app.set('err', err);
-            res.redirect('/users/users/'+user._id+'?valid='+encodeURIComponent(JSON.stringify(err)));
+            return res.send(err);
         });
     }).catch(err => {
-        //console.log(err);
-        res.render('404', { title: 'User not found' });
+        console.log(err);
+        return res.status(404).json(err);
     });
 }
 
@@ -116,7 +99,7 @@ const destroy = (req, res) => {
     });
 }
 
-function _getFields(user) {
+function _getFields(req, user) {
     let fields = utils.getJSON('./models/users/user/fields.json');
     fields.forEach(field => {
         if (field.name == 'password') {
@@ -124,10 +107,12 @@ function _getFields(user) {
         }
 
        if (field.name == 'role') {
-           field.options = user.roleOptions;
+           field.options = req.currentUser.roleOptions;
        }
 
-       field.value = user[field.name]; 
+       if (user !== undefined) {
+           field.value = user[field.name]; 
+       }
     });
 
     return fields;

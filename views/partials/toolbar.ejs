@@ -1,7 +1,9 @@
 <div>Toolbar <%= type; %></div>
 
-<% actions[type].forEach( action => {
-    if (action.type == 'button') { %>
-	<button type="button" id="<%= action.id; %>" class="btn btn-success"><%= action.label; %></button>
-    <% } %>
-<% }) %>
+<div class="toolbar">
+    <% actions[type].forEach( action => {
+        if (action.type == 'button') { %>
+        <button type="button" id="<%= action.id; %>" class="btn btn-success"><%= action.label; %></button>
+        <% } %>
+    <% }) %>
+</div>

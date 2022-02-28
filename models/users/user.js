@@ -4,6 +4,7 @@ const utils = require('../../helpers/utilities');
 const Schema = mongoose.Schema;
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const roles = utils.getJSON('./models/users/user/roles.json');
 
 const userSchema = new Schema({
   name: {
@@ -30,10 +31,12 @@ const userSchema = new Schema({
     type: String,
     trim: true,
     required: true,
+    enum: roles,
   },
 }, { timestamps: true });
 
 userSchema.pre('save', async function () {
+     console.log('pre user id '+this._id);
     // generate salt to hash password
     const salt = await bcrypt.genSalt(10);
     // now we set user password to hashed password
@@ -56,15 +59,12 @@ userSchema.statics.login = async function(email, password) {
 };
 
 userSchema.virtual('roleOptions').get(function () {
-    const options = utils.getJSON('./models/users/user/roles.json');
-    console.log('user name'+this.name);
+    const options = roles;
     return options;
 });
 
 userSchema.statics.getRoleOptions = function() {
-    const options = utils.getJSON('./models/users/user/roles.json');
-    console.log('getRoleOptions');
-    return options;
+    return roles;
 };
 
 // Create the User model.
