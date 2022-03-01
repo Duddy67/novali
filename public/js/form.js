@@ -41,7 +41,7 @@ function saveData() {
 
     const body = {};
     [...form.elements].forEach(element => {
-        body[element.name] = element.value;
+        body[element.name] = element.value.trim();
     });
 
     fetch(form.action, { 

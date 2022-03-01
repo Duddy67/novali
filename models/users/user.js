@@ -18,14 +18,17 @@ const userSchema = new Schema({
     unique: true,
     required: true,
     validate: {
-        validator: (email) => emailRegex.test(email),
+        validator: function(email) { 
+            console.log(email+' : '+this._id);
+            return emailRegex.test(email);
+        },
         message: (props) => `${props.value} is not a valid email`,
     },
   },
   password: {
     type: String,
     trim: true,
-    required: [true, 'Content cannot be empty.'],
+    //required: [true, 'Content cannot be empty.'],
   },
   role: {
     type: String,
@@ -35,11 +38,15 @@ const userSchema = new Schema({
   },
 }, { timestamps: true });
 
-userSchema.pre('save', async function () {
-     console.log('pre user id '+this._id);
-    // generate salt to hash password
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+    console.log('pre user id '+this._id+' '+this.password);
+        return next();
+    }
+
+    // Generate salt to hash password
     const salt = await bcrypt.genSalt(10);
-    // now we set user password to hashed password
+    // Now we set user password to hashed password
     this.password = await bcrypt.hash(this.password, salt);
 });
 

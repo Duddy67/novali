@@ -24,6 +24,13 @@
       "extra": ["validation"] 
     },
     {
+      "label": "labels.users.confirmpassword",
+      "type": "password",
+      "name": "confirmPassword",
+      "id": "confirmPassword",
+      "extra": ["validation"] 
+    },
+    {
       "label": "labels.users.role",
       "type": "select",
       "name": "role",

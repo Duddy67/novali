@@ -51,7 +51,7 @@ const edit = (req, res) => {
 }
 
 const save = (req, res) => {
-    console.log('save user');
+    //req._saveContext = 'create';
     const user = new User(req.body);
     user.save()
       .then(result => {
@@ -63,18 +63,28 @@ const save = (req, res) => {
 }
 
 const update = (req, res) => {
+
+    const result = _checkPassword(req);
+    if (result.errors !== undefined) {
+        return res.send(result);
+    }
+
     User.findById(req.params.id)
     .then(user => {
         user.name = req.body.name;
         user.email = req.body.email;
-        user.password = req.body.password;
         user.role = req.body.role;
+
+        if (req.body.password) {
+            user.password = req.body.password;
+        }
 
         user.save()
         .then(result => {
             return res.send({ success: { message: 'User saved successfuly', result } });
         })
         .catch(err => {
+    //console.log(err.errors);
             return res.send(err);
         });
     }).catch(err => {
@@ -97,6 +107,27 @@ const destroy = (req, res) => {
         console.log(err);
         res.render('404', { title: 'User not found' });
     });
+}
+
+function _checkPassword(req, res) {
+
+    let result = null;
+
+    if (req.body.password == '') {
+        if (req.method == 'PUT') {
+            return true;
+            // OK return
+        }
+
+        // Error return
+        return {errors: {password: {message: 'Password is required'}}};
+    }
+
+    if (req.body.password != req.body.confirmPassword) {
+        return {errors: {confirmPassword: {message: 'The 2 passwords don\'t match '}}};
+    }
+
+    return true;
 }
 
 function _getFields(req, user) {
