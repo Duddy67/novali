@@ -20,8 +20,6 @@ const index = (req, res) => {
 }
 
 const create = (req, res) => {
-        console.log(req.currentUser);
-    User.getRoleOptions();
     res.render('users/users/create', {
         title: 'Create user', 
         req,
@@ -51,7 +49,12 @@ const edit = (req, res) => {
 }
 
 const save = (req, res) => {
-    //req._saveContext = 'create';
+    const result = _checkPassword(req);
+    // Check first for error regarding password.
+    if (result.errors !== undefined) {
+        return res.send(result);
+    }
+
     const user = new User(req.body);
     user.save()
       .then(result => {
@@ -63,17 +66,19 @@ const save = (req, res) => {
 }
 
 const update = (req, res) => {
-
     const result = _checkPassword(req);
+    // Check for error regarding password.
     if (result.errors !== undefined) {
         return res.send(result);
     }
 
     User.findById(req.params.id)
     .then(user => {
+        // Current user cannot change their role.
+        const role = req.currentUser._id.equals(req.params.id) ? user.role : req.body.role;
         user.name = req.body.name;
         user.email = req.body.email;
-        user.role = req.body.role;
+        user.role = role;
 
         if (req.body.password) {
             user.password = req.body.password;
@@ -109,22 +114,36 @@ const destroy = (req, res) => {
     });
 }
 
-function _checkPassword(req, res) {
+function _checkPassword(req) {
 
     let result = null;
 
+    // No password is defined.
     if (req.body.password == '') {
+        // The user already exists, their profile is just updated.
         if (req.method == 'PUT') {
+            // Keep the current password.
             return true;
-            // OK return
         }
 
-        // Error return
-        return {errors: {password: {message: 'Password is required'}}};
+        // The user is about to be created (method = POST). Passord is mandatory.
+        return {
+            errors: {
+                password: {
+                    message: 'Password is required'
+                }
+            }
+        };
     }
 
     if (req.body.password != req.body.confirmPassword) {
-        return {errors: {confirmPassword: {message: 'The 2 passwords don\'t match '}}};
+        return { 
+            errors: { 
+                confirmPassword: { 
+                    message: 'The 2 passwords don\'t match ' 
+                } 
+            } 
+        };
     }
 
     return true;
@@ -133,12 +152,21 @@ function _checkPassword(req, res) {
 function _getFields(req, user) {
     let fields = utils.getJSON('./models/users/user/fields.json');
     fields.forEach(field => {
+        // Leave the password field empty.
         if (field.name == 'password') {
             return;
         }
 
        if (field.name == 'role') {
-           field.options = req.currentUser.roleOptions;
+           // The current user is editing his own profile.
+           if (user !== undefined && user._id.equals(req.currentUser._id)) {
+               // The current user cannot change his role attribute.
+               field.extra.push('disabled');
+               field.options = [user.role];
+           }
+           else {
+               field.options = req.currentUser.assignableRoles;
+           }
        }
 
        if (user !== undefined) {

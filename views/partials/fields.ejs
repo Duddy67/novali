@@ -8,11 +8,11 @@
     <% const fieldClass = field.hasOwnProperty('class') ? field.class : ''; 
        const fieldValue = field.hasOwnProperty('value') ? field.value : ''; 
        const error = field.hasOwnProperty('error') ? field.error : null; 
-       //const errorClass = field.hasOwnProperty('error') ? 'is-invalid' : ''; 
-       const validationClass = field.hasOwnProperty('extra') && field.extra.includes('validation') ? '_validation' : ''; %>
+       const validationClass = field.hasOwnProperty('extra') && field.extra.includes('validation') ? '_validation' : ''; 
+       const disabled = field.hasOwnProperty('extra') && field.extra.includes('disabled') ? 'disabled' : ''; %>
 
     <% if (['text', 'hidden', 'password', 'date', 'file'].includes(field.type)) { %>
-        <input type="<%= field.type %>" id="<%= field.id %>" 
+        <input type="<%= field.type %>" id="<%= field.id %>" <%= disabled %> 
 
         <% if (field.hasOwnProperty('name')) { %>
                 name="<%= field.name %>"
@@ -30,7 +30,7 @@
     <% } %>
 
     <% if (field.type == 'select') { %>
-            <select id="<%= field.id %>" name="<%= field.name %>" class="form-control <%= `${fieldClass} ${validationClass}` %>">
+            <select id="<%= field.id %>" name="<%= field.name %>" class="form-control <%= `${fieldClass} ${validationClass}` %>" <%= disabled %> >
                 <% if (field.hasOwnProperty('blank')) { %>
                     <option value=""><%= field.blank %> </option> 
                 <% } %>
@@ -43,7 +43,7 @@
     <% } %>
 
     <% if (field.type == 'textarea') { %>
-        <textarea id="<%= field.id %>" class="form-control <%= `${fieldClass} ${validationClass}` %>"
+        <textarea id="<%= field.id %>" class="form-control <%= `${fieldClass} ${validationClass}` %>" <%= disabled %> 
 
         <% if (field.hasOwnProperty('name')) { %>
                 name="<%= field.name %>"

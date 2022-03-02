@@ -40,7 +40,6 @@ const userSchema = new Schema({
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
-    console.log('pre user id '+this._id+' '+this.password);
         return next();
     }
 
@@ -48,6 +47,8 @@ userSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt(10);
     // Now we set user password to hashed password
     this.password = await bcrypt.hash(this.password, salt);
+
+    return next();
 });
 
 // Static method to login user
@@ -65,14 +66,34 @@ userSchema.statics.login = async function(email, password) {
     throw Error('incorrect email');
 };
 
-userSchema.virtual('roleOptions').get(function () {
-    const options = roles;
-    return options;
-});
+/*
+ * Return the roles the current user is allowed to assign to other users.
+ */
+userSchema.virtual('assignableRoles').get(function () {
+      console.log('roleOptions: '+this.name);
+    let results = [];
+    let start = false;
 
-userSchema.statics.getRoleOptions = function() {
-    return roles;
-};
+    // Loop through the roles ordered by hierarchy level.
+    roles.forEach(role => {
+        // Check the current user's role.
+        if (role == this.role) {
+            // Start to store the roles the current user is allowed to assign.
+            start = true;
+            // However, the current user cannot assign his own hierarchy level to other users.
+            // N.B: He cannot create, edit or delete users from the same hierarchy level either.
+            return;
+        }
+
+        if (!start) {
+            return;
+        }
+
+        results.push(role);
+    });
+
+    return results;
+});
 
 // Create the User model.
 const User = mongoose.model('User', userSchema);

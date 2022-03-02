@@ -11,6 +11,11 @@
       "type": "string"
     },
     {
+      "label": "labels.generic.role",
+      "name": "role",
+      "type": "string"
+    },
+    {
       "label": "labels.generic.created_at",
       "name": "createdAt",
       "type": "date"
